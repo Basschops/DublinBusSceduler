@@ -1,0 +1,7 @@
+venv
+*.pyc
+.env
+*.sqlite3
+ml_models_local_test
+staticfiles
+.idea/workspace.xml

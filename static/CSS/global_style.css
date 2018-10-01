@@ -1,0 +1,99 @@
+body {
+    padding-top: 50px;
+}
+
+.btn {
+    
+    color:black;
+    background-color: #e6e6e6;
+    border-color: white;
+    
+}
+
+.btn:hover {
+    
+    color:white;
+    background-color:lightgray;
+    border-color:white;
+}
+
+.nav navbar-nav navbar-right {
+    
+    color:white;
+    
+}
+
+.navbar {
+    background-color: white;
+    color: black;
+}
+
+
+.blue1 {
+    background-color: white;
+    color: black;
+}
+
+.blue2 {
+    background-color: white;
+}
+
+a {
+    background-color:white;
+    color:black;
+}
+
+footer a:hover, .navbar-right a:hover {
+    color: black;
+    text-decoration: none;
+}
+
+.table td {
+    text-align: left;
+}
+
+.table {
+    font-size: medium;
+}
+
+.navbar-brand:hover {
+    background-color: #e6e6e6;
+    color: black;
+}
+
+.jumbotron {
+    background: white;
+    color: black;
+    margin-bottom: 0px;
+    margin-top: 500px;
+}
+.jumbotron p {
+    color: black;
+    max-width: 75%;
+    margin: 1em auto 2em
+}
+.navbar+.jumbotron {
+    background-color:#f5f5f5;
+    color:black;
+    margin-top: -20px
+}
+
+#inputbox {
+    background-color: white;
+    margin-top: 5px;
+}
+
+#suggestionbox {
+    background-color:white;
+    margin-top: 5px;
+}
+
+#directions-result {
+    background-color: white;
+    border: black;
+}
+
+#directions-rows {
+    font-size: smaller;
+    background-color: #e6e6e6;
+}

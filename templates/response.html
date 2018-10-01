@@ -1,0 +1,167 @@
+<br/>
+<div class="table-condensed" id="inputbox">
+    <table class="table table-condensed">
+        <thead>
+        <tr>
+
+            {% if persona != 'explorer' %}
+            <th>Bus</th>
+            {% endif %}
+
+            <th>Start</th>
+            <th>End</th>
+
+            {% if persona == 'planner' or persona == 'explorer' %}
+            <th>Date & Time</th>
+            {% endif %}
+
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr>
+            {% if persona != 'explorer' %}
+            <td>{{ busNum }}</td>
+            {% endif %}
+
+            <td>{{ from }}</td>
+            <td>{{ to }}</td>
+
+            {% if persona == 'planner' or persona == 'explorer' %}
+            <td>{{ date }} {{ time }}</td>
+            {% endif %}
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+{% if error == 0 %}
+{% if persona == 'planner' or persona == 'onthego' %}
+<div class="table-condensed" id="suggestionbox">
+    <table class="table table-condensed">
+        <thead>
+        <tr>
+            <th>Departure</th>
+            <th>Duration</th>
+
+            {% if persona == 'planner' %}
+            {% if bestJourneyTime %}
+            <th>We have found a quicker trip at this time:</th>
+            <th>Duration</th>
+            {% else %}
+            <th>Flexi trip</th>
+            {% endif %}
+            {% endif %}
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+
+            {% if persona == 'planner' %}
+
+            <td>{{ leave_time }}</td>
+            {% endif %}
+
+            {% if persona == 'onthego' %}
+            <td> {{ bus1 }}
+
+                {% if bus2 %}
+
+                <br>{{ bus2 }}
+                {% endif %}
+
+                {% if bus3 %}
+
+                <br>{{ bus3 }}</td>
+            {% endif %}
+            {% endif %}
+
+            {% if journeyTime.h %}
+            <td>{{ journeyTime.h }} hours, {{ journeyTime.m }} minutes</td>
+
+            {% elif journeyTime.m %}
+            <td>{{ journeyTime.m }} minutes</td>
+
+            {% else %} <!-- have hours, minute & seconds -->
+            <td>{{ journeyTime.s }} seconds</td>
+            {% endif %}
+
+            {% if bestJourneyTime %}
+            <td>{{ bestStartTime }}</td>
+            <td> {{ bestJourneyTime }}</td>
+            {% else %}
+            <td>{{ bestStartTime }}</td>
+            {% endif %}
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+{% endif %}
+{% endif %}
+
+{% if error == 0 and persona == 'explorer' %}
+<div class="table-condensed" id="suggestionbox">
+    <table class="table table-condensed">
+        <thead>
+        <tr>
+            <th>Departure</th>
+            <th>Arrival</th>
+            <th>Duration</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ departure }}</td>
+            <td>{{ arrival }}</td>
+            <td>{{ duration }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="table-condensed" id="directions-result">
+        <table class="table table-condensed">
+            <thead>
+            <tr>
+                <th>Steps of the trip</th>
+                <th>Duration</th>
+                <th>Distance</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for step in steps %}
+            <tr>
+                <td>{{ step.0|default:"Shoot, we don't have any information on this for you." }}</td>
+                <td>{{ step.1 }}</td>
+                <td>{{ step.2 }}</td>
+            </tr>
+            {% if step.3 %}
+            <tr id="directions-rows">
+                <td>Bus <br>{{ step.3 }}</td>
+                <td>Start <br> {{ step.4.name }}</td>
+                <td>End <br> {{ step.5.name }}</td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+{% endif %}
+
+
+{% if error != 0 %}
+<!-- there's an error, display error messages -->
+<div class="row">
+    <div class="col-sm-12">
+        <ul class="list-group">
+            <h3>Something went wrong...</h3>
+            <li class="list-group-item">{{ error_1 }}</li>
+            <li class="list-group-item">{{ error_2 }}</li>
+            <li class="list-group-item">{{ error_3 }}</li>
+        </ul>
+    </div>
+</div>
+{% endif %}

@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="jumbotron text-center">
+  <div class="container">
+  
+    <div class="row">
+      <div id="location_alert" class="alert alert-info" role="alert" style="display: none;">
+        <b>Warning:</b> we could not retrieve your current <b>location</b>.
+        To utilize our services fully, please make sure your location feature is <b>turned on</b> and <b>refresh</b> the page.
+      </div>
+    </div>
+      <div class="col-sm-3"></div>
+      <div class="col-sm-4">
+        <div class="form-group">
+          <div class="ui-widget"> <!-- jQuery autocomplete UI -->
+           
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-sm-4"></div>
+
+    <br>
+
+    <div class="row">
+      <div class="col-sm-9">
+        <div id="map" style="width:100%; height:450px;">
+          <!-- google maps go here -->
+
+        </div>
+      </div>
+
+      <div class="col-sm-3" style="background-color:#d9d9d9;">
+        <br>
+
+        <!--Input box for route number with autocomplete RTPI query-->
+        <form action="/onthego/formdata" method="get" id="onthego_form">
+          <div class="form-group">
+            <!-- <input id="route_number" onkeyup="pred1()" class="form-control" type="text" placeholder="e.g. 46A" name="busnum_var" required> -->
+            <div class="ui-widget"> <!-- jQuery autocomplete UI -->
+
+              <input id="bus_number" class="form-control" type="text" placeholder="Bus number" style=font-size:13px; name="busnum_var" required>
+
+            </div>
+          </div>
+
+          <!-- Input box for "from" with autocomplete RTPI query -->
+          <div class="form-group">
+            <div class="ui-widget"> <!-- jQuery autocomplete UI -->
+
+              <input id="location_from" class="form-control" type="text" placeholder="Start stop" style=font-size:13px; name="from_var" required>
+
+            </div>
+          </div>
+
+          <!-- Input box for "to" with autocomplete RTPI query -->
+          <div class="form-group">
+            <div class="ui-widget"> <!-- jQuery autocomplete UI -->
+
+              <input id="location_to"  class="form-control" type="text" placeholder="End stop" style=font-size:13px; name="to_var" required>
+
+            </div>
+          </div>
+
+          <button class="btn btn-primary" type="submit">Submit</button>
+          <br/><br/><br><br>
+            
+ <div style=background-color:#D9EDF6;border-radius:4px;>  <br>
+            <p style=font-size:12px;font-family:inherit;color:#316F8F;> <b>Don't know bus number?</b> No problem, we can still help </p>   
+            
+            <a class="btn btn-primary" type="button" href="/tourist">Click here </a> 
+         <br><br><br>
+ </div> <br>
+        </form>
+
+      </div>
+      
+
+    </div>
+
+    <!-- the response rendered by back end Django will be inserted here by jQuery AJAX call -->
+    <div id="response"></div>
+  </div>
+</div>
+
+{% endblock %}

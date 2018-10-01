@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="jumbotron text-center">
+    <div class="container">
+
+        <br/>
+        <div class="row">
+          <div id="location_alert" class="alert alert-info" role="alert" style="display: none;">
+            <b>Warning:</b> we could not retrieve your current <b>location</b>.
+            To utilize our services fully, please make sure your location feature is <b>turned on</b> and <b>refresh</b> the page.
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                
+                   <div class="col-sm-4">
+                    <p2>Activities&nbsp;</p2>
+
+                        <img src="http://labs.google.com/ridefinder/images/mm_20_orange.png">
+                        <input id='ActivitiesCheck' type="checkbox">
+                        <span class="checkmark"></span>
+
+                </div>
+                
+                <div class="col-sm-4">
+                    <p2>Shopping          </p2>
+
+                        <img src="http://labs.google.com/ridefinder/images/mm_20_gray.png">
+                        <input id="ShoppingCheck" type="checkbox">
+                        <span class="checkmark"></span>
+
+                </div>
+
+                
+                <div class="col-sm-4">
+                    <p2>Transport</p2>
+
+                        <img src='http://labs.google.com/ridefinder/images/mm_20_green.png'>
+                        <input id="TravelLinksCheck" type="checkbox">
+
+                        <span class="checkmark"></span>
+
+                </div>
+
+            
+             
+            </div>
+
+            <div class="col-xs-6">
+                <div class="col-sm-4">
+                    <p2>The Sights</p2>
+
+                        <img src="http://labs.google.com/ridefinder/images/mm_20_purple.png">
+                        <input id='SightsCheck' type="checkbox">
+
+                        <span class="checkmark"></span>
+
+                </div>
+
+                <div class="col-sm-4">
+                    <p2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Family</p2>
+                        <img src="http://labs.google.com/ridefinder/images/mm_20_black.png">
+                        <input id='FamilyCheck' type="checkbox">
+                        <span class="checkmark"></span>
+
+                </div>
+
+                <div class="col-sm-4">
+                    <p2>Outdoors&nbsp;&nbsp;</p2>
+
+                        <img src="http://labs.google.com/ridefinder/images/mm_20_white.png">
+                        <input id="OutdoorsCheck" type="checkbox">
+                        <span class="checkmark"></span>
+
+
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <br>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-sm-9"> <br>
+                <div id="map" style="width:100%; height:450px;">
+                    <!-- google maps go here -->
+                </div>
+            </div>
+            <br>
+
+            <div class="col-sm-3" style="background-color:#d9d9d9;">
+
+                <form action="/tourist/formdata" method="get" id="explorer_form">
+                    
+                         <!-- Input box for date -->
+                    <div class="form-group">
+                        <br>
+                        <input id="datepicker_ex" class="form-control" type="text" placeholder="Date" name="date_var_ex"
+                               required>
+                    </div>
+                    
+                    <!-- Input box for "from" with Google directions API -->
+                    <div class="form-group">
+                        <input id="location_from_ex"   class="form-control" type="text"
+                               placeholder="Start Location" name="from_var_ex">
+                    </div>
+
+                    <!-- Input box for "to" with Google directions API -->
+                    <div class="form-group">
+                        <!-- AUTOCOMPLETE USER INPUT -->
+                        <input id="location_to_ex" class="form-control" type="text" placeholder="Destination" name="to_var_ex">
+                    </div>
+
+               <br><br>
+
+                    <!-- Input box for time -->
+                    <div class="form-group">
+
+                        <input id="clockpicker_ex" class="form-control" class="clockpicker" type="time" placeholder="Time"
+                               name="time_var_ex" value="09:00" required>
+                    </div>
+
+                    <button class="btn btn-primary" id ="exButton" type="submit">Submit <br></button> 
+                    
+
+                </form>
+
+                <div id="datepicker"></div>
+
+                <!--Script to render clockpicker and datepicker-->
+                <script>
+                    $(document).ready(function() {
+                        $("input[type=time]").clockInput(false);
+                        $("#datepicker_ex").datepicker({maxDate: new Date( 2018, 11, 31), minDate: new Date(), altField: "#selectDate"});
+                    })
+                </script>
+
+            </div>
+        </div>
+
+        <!-- the response rendered by back end Django will be inserted here by jQuery AJAX call -->
+        <div id="response"></div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+

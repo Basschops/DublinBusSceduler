@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>BUSy</title>
+
+  {% load static %}
+
+  <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <link rel="stylesheet" type="text/css" href="{% static 'CSS/global_style.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'CSS/response_style.css' %}" />
+</head>
+<body>
+
+<!-- navigation bar -->
+<nav class="navbar navbar-fixed-top" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Your Persona</span> <!--for visually impaired-->
+        <span class="glyphicon glyphicon-isUser"></span>
+      </button>
+      <a href="/" class="navbar-brand">BUSy</a>
+    </div>
+
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/onthego">On The Go</a></li>
+        <li><a href="/theplanner">The Planner</a></li>
+        <li><a href="/tourist">Tourist</a></li>
+        <li class="divider"></li>
+        <li><a href="#">What are personas?</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- main content will be inserted between the templating tags below -->
+
+<div class="jumbotron text-center">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <p>TESTING PAGE</p>
+      </div>
+    </div>
+    <div class="row">
+      <div id="error_message_1" class="col-sm-4" style="background-color:white;">
+        <p>Your current location: </p>
+      </div>
+      <div id="error_message_2" class="col-sm-4" style="background-color:white;">
+        <p>Displaying stops within ~ 1km</p>
+      </div>
+        <div class="col-sm-4" style="background-color:white;">
+        <div id="map_test" style="width:100%; height:400px;">
+          <!-- google maps go here -->
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12" style="background-color: white">
+        <!-- experimental jQuery autosuggest -->
+          <div class="ui-widget">
+            <label for="destination">Tags: </label>
+            <input id="destination" required>
+          </div>
+          <!-- experimental jQuery autosuggest -->
+          <button class="btn btn-primary" id="directionsButton">Get Directions</button>
+      </div>
+    </div>
+    <div class="row">
+      <div id="error_message_1" class="col-sm-4" style="background-color: white">
+        <p>{{ msg1 }}</p>
+      </div>
+      <div id="error_message_2" class="col-sm-4" style="background-color: white">
+        <p>{{ msg2 }}</p>
+      </div>
+      <div id="error_message_3" class="col-sm-4" style="background-color: white">
+        <p>{{ msg3 }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- footer -->
+<footer class="page-footer blue1">
+  <div class="container-fluid text-center" style="padding-bottom:auto;">
+    <div class="row">
+      <div class="col-sm-6">
+        <h5 class="text-uppercase">BUSy</h5>
+        <p>Produced by T3DB.</p>
+      </div>
+      <div class="col-sm-6">
+        <h5 class="text-uppercase">Links</h5>
+        <ul class="list-unstyled">
+          <li><a href="#">About</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms and Conditions</a></li>
+          <li><a href="#">FAQs</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copyright text-center blue2">
+    © 2018 Copyright: <a href="#">BUSy Team</a>
+  </div>
+</footer>
+
+
+
+<!-- map scrips -->
+<script>
+  'use strict';
+
+var map;
+var markers = []; //Create an array of markers for the marker cluster function
+var userMarker; //User marker handle
+
+//Loads the map
+function initMap(){
+    var mapDiv = document.getElementById("map_test");
+    var mapOptions = {
+        center: new google.maps.LatLng(53.3498, -6.2603),
+        zoom: 14
+    };
+
+    map = new google.maps.Map(mapDiv, mapOptions);
+}
+
+
+//Makes a marker for and add onlick functionality
+function addMarkers(latlong, color = "red", infowindow, infowindow_content, stopid, isUser = false){
+  //create a marker
+    var marker = new google.maps.Marker({
+        position: latlong,
+        title: "Bus Stop No. " + stopid,
+        draggable: false,
+        map: map,
+        icon: 'http://maps.google.com/mapfiles/ms/icons/' + color + '-dot.png'
+    });
+
+    //Add the pop up box to marker for onclick
+    google.maps.event.addListener(marker, 'click', function(content){
+        infowindow.setContent(infowindow_content);
+        infowindow.open(map, marker);
+    });
+
+    //special cases
+    if (isUser === false){
+      markers.push(marker); //Create an array of markers for the marker cluster function
+    } else {
+      marker.title = stopid; //This will just display the isUser string "You Are Here" instead of bus stop number
+      marker.setAnimation(google.maps.Animation.BOUNCE);
+      userMarker = marker;
+    }
+}
+
+
+//makes the markers invisible by calling this function like setMapForMarkers(some_marker_array, null);
+function setMapForMarkers(markerArray, map){
+  for (let i = 0; i < markerArray.length; i++){
+    markerArray[i].setMap(map);
+  }
+}
+
+
+//makes markers invisible and deletes them
+function deleteMarkers(markerArray){
+  setMapForMarkers(markerArray, null); //Hide all the markers first
+  markerArray = [] //Remove references to the markers to delte them
+}
+
+
+//Responds to onclick event when from button is clicked on a marker
+function fromButton(element){
+    console.log(element.id.slice(5)); //Extract the bus number e.g. "from_623" -> "623"
+    console.log(element.innerHTML);
+
+    document.getElementById('from').value = element.id.slice(5); //Populate a form field
+}
+
+
+//Responds to onclick event when to button is clicked on a marker
+function toButton(element){
+    console.log(element.id.slice(3)); //Extract the bus number e.g. "to_623" -> "623"
+    console.log(element.innerHTML);
+
+    document.getElementById('to').value = element.id.slice(3); //Populate a form field
+}
+
+
+//Populate the map with information & markers
+$( window ).on( "load", function() { //When DOM & other resourses all loaded and ready...
+    console.log( "Page ready!!" ); //FOR DEBUGGING
+
+    var infowindow = new google.maps.InfoWindow(); //Common infowindow handle for all infowindows
+
+    var errorMSG_1 = document.getElementById("error_message_1"); //FOR DEBUGGING
+    var errorMSG_2 = document.getElementById("error_message_2"); //FOR DEBUGGING
+    var userPosition = {lat: 53.3498, lng: -6.2603}; //Will be center of Dublin by default if no isUser position recieved later on...
+
+    //Get the isUser location
+    if (navigator && navigator.geolocation) {
+      console.log("Got location");
+      errorMSG_1.innerHTML += "Got location";
+
+      navigator.geolocation.getCurrentPosition(gotPosition, failedToGetPosition);
+    } else { 
+      console.log("Failed to get location, Geolocation unavailable");
+      errorMSG_2.innerHTML += "Geolocation is not supported by this browser. We could not find your location.";
+    }
+
+
+    function gotPosition(position) { //success
+      userPosition = showUserPosition(position);
+      //displayBusStopMarkersAtLocation(userPosition, 0.01); //0.01 is ~ 1km
+      //displayDirectionMarkers(userPosition, {lat: 53.338331, lng: -6.2854988});
+    }
+
+
+    function failedToGetPosition(error){
+      console.log("Error code:" + error.code + ", " + "Error message: " + error.message);
+
+      displayBusStopMarkersAtLocation(userPosition, 0.01); //0.01 is ~ 1km
+    }
+
+
+    function showUserPosition(position){
+      //Conversts isUser position from geolocation coords to {lat: xxx, lng: xxx}
+      //and add the a marker to the map.
+      //
+      //returns converted isUser position
+      let userPosition = {}
+      userPosition.lat = position.coords.latitude;
+      userPosition.lng = position.coords.longitude;
+
+      let infowindow_content = "<b>You Are Here</b>";
+
+      addMarkers(new google.maps.LatLng(userPosition.lat, userPosition.lng), "red", infowindow, infowindow_content, "You Are Here", true);
+      map.panTo({lat: userPosition.lat, lng: userPosition.lng});
+
+      errorMSG_2.innerHTML += "Latitude: " + userPosition.lat + 
+      "<br>Longitude: " + userPosition.lng; //FOR DEBUGGING...
+
+      return userPosition
+    }
+
+
+    function displayBusStopMarkersAtLocation(coords = {lat: 53.3498, lng: -6.2603}, radius = 0.01){
+      //populate the markers around the isUser
+      $.getJSON("/busstops", function(busData){
+
+          _.forEach(busData.results, function(bus_stop){
+              //console.log(bus_stop.operators[0].routes);
+
+              if (bus_stop.latitude < (coords.lat + radius) && bus_stop.latitude > (coords.lat - radius)
+              && bus_stop.longitude < (coords.lng + radius) && bus_stop.longitude > (coords.lng - radius)){
+                let infowindow_content = "<b>Bus Stop No: </b>"+bus_stop.stopid
+                                    +"<br><br>"
+                                    +"<b>Name:</b> "+bus_stop.fullname
+                                    +"<br><br>"
+                                    +"<b>Routes serving this stop:</b>"
+                                    +"<br><br>"+bus_stop.operators[0].routes
+                                    +"<br><br>"
+                                    +"<button type=\"button\" id=\"from_"+bus_stop.stopid+"\" onclick=\"fromButton(this)\">From "+bus_stop.stopid+"</button>"
+                                    +"<br><br>"
+                                    +"<button type=\"button\" id=\"to_"+bus_stop.stopid+"\" onclick=\"toButton(this)\">To "+bus_stop.stopid+"</button>";
+
+                addMarkers(new google.maps.LatLng(bus_stop.latitude, bus_stop.longitude), "green", infowindow, infowindow_content, bus_stop.stopid);
+              }
+        });
+
+      }).done(function() {
+
+      console.log("Done!!"); //for DEBUGING
+
+      //var markerCluster = new MarkerClusterer(map, markers, {
+      //    imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+      //});
+
+      }).fail(function() {
+
+      console.log("Failed!!"); //for DEBUGING
+      alert("Warnign: map markers could not load...");
+
+      }).always(function(){
+
+      console.log("Always...!"); //for DEBUGING
+
+      });
+    }
+
+
+    function displayDirectionMarkers(from, to){
+      //check if input is string or object and convert to string if needed
+      let origin = typeof from === "string" ? from : from.lat+","+from.lng;
+      let destination = typeof to === "string" ? to : to.lat+","+to.lng;
+
+      $.getJSON("/directions" 
+                + "?origin="+origin
+                +"&destination="+destination
+                +"&mode="+"transit"
+                +"&transit_mode="+"bus", function(directionsData){
+
+        //console.log(directionsData.routes[0].legs[0].steps);
+
+        let index = 0; //keep track of which step along the route we are on...
+        let markerColor = "blue"; //Blue is bus, Yellow is walking, Red is the user starting location.
+
+        _.forEach(directionsData.routes[0].legs[0].steps, function(step){
+          index++;
+
+          console.log(step); //FOR DEBUGGING
+
+          if (step.travel_mode === "TRANSIT") { //must be bus...
+            markerColor = "blue";
+
+            var infowindow_content = "<b>["+index+"]Take a: </b>"+step.html_instructions
+                                    +"<br><br>"
+                                    +"<b>Stop Name:</b> "+step.transit_details.departure_stop.name
+                                    +"<br><br>"
+                                    +"<b>Routes serving this stop:</b>"
+                                    +"<br><br>"+step.transit_details.line.short_name
+                                    +"<br><br>";
+          } else { //must be walking...
+            markerColor = "yellow";
+            var infowindow_content = "<b>["+index+"]On foot: </b>"+step.html_instructions;
+          }
+          if (index == 1) { //First marker is the user starting location, make it red & remove the initial user marker...
+            markerColor = "red";
+            deleteMarkers([userMarker]);
+            //addMarkers(new google.maps.LatLng(step.start_location), "red", infowindow, infowindow_content, step.html_instructions);
+          } else { //2nd and further markers are directional waypoints - make them yellow...
+            //addMarkers(new google.maps.LatLng(step.start_location), "yellow", infowindow, infowindow_content, step.html_instructions);
+          }
+
+          addMarkers(new google.maps.LatLng(step.start_location), markerColor, infowindow, infowindow_content, step.html_instructions);
+
+        });
+
+      }).done(function(){
+        console.log("Got directions data...");
+      }).fail(function(){
+        console.log("Failed to get directions data...");
+      }).always(function(){
+        //...
+      });
+    }
+
+
+    //set the directions button callback...
+    $( '#directionsButton' ).click(function(){
+      //displayDirectionMarkers(userPosition, {lat: 53.338331, lng: -6.2854988}); //53.338331,-6.2854988
+      //console.log(typeof $('#destination').val());
+      deleteMarkers(markers); //clear current direction markers
+
+      let destination = $('#destination').val();
+      displayDirectionMarkers(userPosition, destination); //show the new direction markers
+    });
+
+
+    //set the autocomplete callback...
+    $( "#destination" ).autocomplete({
+        source: function(request, response){
+            var availableTags = [];
+
+            var to_input = request.term; //This is the user input
+            //console.log(to_input); //DEBUGGING
+
+            $.getJSON( "/autocomp" + "?format=json&operator=bac&stopname="+to_input, function(data) {
+
+                _.forEach(data.results, function(busStops){
+                    //availableTags.push(busStops.stopid+" "+busStops.fullname );
+                    availableTags.push({ label: busStops.fullname+" "+busStops.stopid, value: busStops.latitude+","+busStops.longitude });
+                });
+
+                //console.log(availableTags); //DEBUGGING
+                response(availableTags);
+
+            }).done(function(){
+                console.log("got autosuggest data");
+            }).fail(function(){
+                alert("failed autosuggest");
+            }).always(function(){
+                //
+            });
+        },
+        minLength: 3 //Number of characters after which the autosuggest should start...
+    });
+});
+</script>
+<script src="{% static 'JS/lodash.js '%}"></script>
+<script src="{% static 'JS/autocomplete.js' %}"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCXmxcpjGKrWHVNpa0s865Eq69p9s1PsHg&callback=initMap" type="text/javascript"></script>
+</body>
+</html>

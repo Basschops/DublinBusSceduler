@@ -1,0 +1,105 @@
+.jumbotron {
+    background:  #e6e6e6;
+    color: black;
+    padding-bottom: 80px
+        
+}
+
+.erb-image-wrapper{
+    max-width:90%;
+    height:auto;
+    position: relative;
+    display:block;
+    margin:0 auto;
+}
+
+.erb-image-wrapper img{
+    max-width:100% !important;
+    height:auto;
+    display:block;
+}
+
+
+.glyphicon {
+    color:black;
+  position:inherit;
+  top:30px;
+  display:inline-block;
+
+    font-size:20px;
+  font-family:'Glyphicons Halflings';
+  font-style:normal;
+  font-weight:400;
+  line-height:2;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+.glyphicon:hover{ 
+    
+-webkit-transform: scale(1.2); 
+
+}
+
+
+.access {
+    
+    background-color: aqua;
+}
+
+.btn {
+    
+    color:black;
+    background-color: #e6e6e6;
+    border: 2px solid #bbbbbb; /* grey */
+}
+
+.btn:hover {
+    
+    color:white;
+    background-color:#e6e6e6;
+    border-color:white;
+}
+
+.jumbotron .btn-primary {
+    background: white;
+    border-color: black;
+    
+}
+
+.jumbotron .btn-primary {
+    background:white;
+    color: black;
+    border-color: white;
+}
+
+.btn-primary:hover {
+    background: #cccccc;
+    color: white;
+    border-color: #cccccc;
+}
+
+.jumbotron p {
+    color: black;
+    max-width: 75%;
+    margin: 1em auto 2em
+}
+
+.navbar+.jumbotron {
+    margin-top: -20px
+}
+
+.jumbotron .lang-logo {
+    display: block;
+    background: #black;
+    border-radius: 50%;
+    overflow: hidden;
+    width: 100px;
+    height: 100px;
+    margin: auto;
+    border: 2px solid white;
+}
+
+.jumbotron .lang-logo img {
+    max-width: 100%
+}

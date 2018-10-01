@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="jumbotron text-center">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <p>The Planner</p>
+                <br>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-8" style="background-color:white;">
+                <div id="map" style="width:100%; height:400px;">
+                    <!-- google maps go here -->
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <br>
+
+                <form action="planner/formdata_loadtest" method="get">
+                    <div class="form-group">
+                        <div class="ui-widget"> <!-- jQuery autocomplete UI -->
+
+                            <input id="bus_number" class="form-control" type="text" placeholder="Bus number"
+                                   name="busnum_var" required>
+                        </div>
+                    </div>
+                    <br>
+
+                    <!-- Input box for "from" with autocomplete RTPI query -->
+                    <div class="form-group">
+                        <div class="ui-widget"> <!-- jQuery autocomplete UI -->
+
+
+                            <input id="location_from" class="form-control" type="text" placeholder="Start stop"
+                                   name="from_var" required>
+
+                        </div>
+                    </div>
+                    <br>
+
+                    <!-- Input box for "to" with autocomplete RTPI query -->
+                    <div class="form-group">
+                        <div class="ui-widget"> <!-- jQuery autocomplete UI -->
+
+                            <input id="location_to" class="form-control" type="text" placeholder="End stop"
+                                   name="to_var" required>
+
+                        </div>
+                    </div>
+                    <br>
+
+                    <!-- Input box for date -->
+                    <div class="form-group">
+                        <input id="datepicker" class="form-control" type="text" placeholder="Date" name="date_var"
+                               required>
+                    </div>
+
+                    <!-- Input box for time -->
+                    <div class="form-group">
+                        <input id="clockpicker" class="form-control" class="clockpicker" type="time" placeholder="Time"
+                               name="time_var" value="00:00" required>
+                    </div>
+
+                    <button class="btn btn-primary" type="submit">Submit</button>
+
+                </form>
+
+                <div id="datepicker"></div>
+
+                <!--Script to render clockpicker and datepicker-->
+                <script>
+                    $(document).ready(function() {
+                        $("input[type=time]").clockInput(false);
+                        $("#datepicker").datepicker({
+                            maxDate: new Date(2018, 11, 31),
+                            minDate: new Date(),
+                            altField: "#selectDate",
+                            showAnim: "fold",
+                            showOptions: {direction: "up"}
+                        })
+                    })
+
+                </script>
+
+            </div>
+        </div>
+
+        <!-- server side rendering of the response to the form submission -->
+        <!-- in next iteration of the product, replace with AJAX call for client side rendering -->
+        {% if busNum %}
+        <!-- if bus number variable is not null...simple check to see if data is returned, before rendering anything below. -->
+        <br/>
+        <div class="row">
+            <div class="col-sm-6">
+                <h2>Your Input</h2>
+                <ul class="list-group">
+                    <li class="list-group-item">Bus number: {{ busNum }}</li>
+                    <li class="list-group-item">From: {{ from }}</li>
+                    <li class="list-group-item">To: {{ to }}</li>
+                    <li class="list-group-item">Date: {{ date }}</li>
+                    <li class="list-group-item">Time: {{ time }}</li>
+                </ul>
+            </div>
+
+            {% if error == 0 %}
+
+            <div class="col-sm-6">
+                <ul class="list-group">
+                    <h2>Our Estimation</h2>
+                    {% if journeyTime.h %}
+                    <li class="list-group-item">Journey time: {{ journeyTime.h }} hours, {{ journeyTime.m }} minutes, {{ journeyTime.s }} seconds
+                    </li>
+                    {% elif journeyTime.m %}
+                    <li class="list-group-item">Journey time: {{ journeyTime.m }} minutes, {{ journeyTime.s }} seconds
+                    </li>
+                    {% else %} <!-- have hours, minute & seconds -->
+                    <li class="list-group-item">Journey time: {{ journeyTime.s }} seconds</li>
+                    {% endif %}
+                    <li class="list-group-item">Bus is at {{ leave_time }}</li>
+                    <li class="list-group-item">---</li>
+                    <li class="list-group-item">Best time to catch bus: {{ bestStartTime }}</li>
+                    {% if bestJourneyTime.h %}
+                    <li class="list-group-item">Journey time: {{ bestJourneyTime.h }} hours, {{ bestJourneyTime.m }} minutes, {{ bestJourneyTime.s }} seconds
+                    </li>
+                    {% elif journeyTime.m %}
+                    <li class="list-group-item">Journey time: {{ bestJourneyTime.m }} minutes, {{ bestJourneyTime.s }} seconds
+                    </li>
+                    {% else %} <!-- have hours, minute & seconds -->
+                    <li class="list-group-item">Journey time: {{ bestJourneyTime.s }} seconds</li>
+                    {% endif %}
+                </ul>
+            </div>
+
+            {% else %}
+            <!-- there's an error, display error messages -->
+            <div class="col-sm-6">
+                <ul class="list-group">
+                    <h2>Our Estimation</h2>
+                    <li class="list-group-item">{{ journeyTime}}</li>
+
+                    <li class="list-group-item">{{ cost }}</li>
+                    <li class="list-group-item">{{ bestStartTime }}</li>
+                </ul>
+            </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+
+    {% endif %}
+
+</div>
+</div>
+
+{% endblock %}

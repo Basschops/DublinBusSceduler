@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="jumbotron text-center">
+    <div class="container">
+
+        <br/>
+        <div class="row">
+          <div id="location_alert" class="alert alert-info" role="alert" style="display: none;">
+            <b>Warning:</b> we could not retrieve your current <b>location</b>.
+            To utilize our services fully, please make sure your location feature is <b>turned on</b> and <b>refresh</b> the page.
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-9">
+                <div id="map" style="width:100%; height:450px;">
+                    <!-- google maps go here -->
+                </div>
+            </div>
+            <div class="col-sm-3" style="background-color:#d9d9d9;">
+                <br>
+
+                <form action="/planner/formdata" method="get" id="planner_form">
+                    <div class="form-group">
+                        
+                         <!-- Input box for date -->
+                    <div class="form-group">
+
+                        <input id="datepicker" class="form-control" type="text" placeholder="Date" name="date_var"
+                               required>
+
+                    </div>
+                        <div class="ui-widget"> <!-- jQuery autocomplete UI -->
+
+                            <input id="bus_number" class="form-control" type="text" placeholder ="Bus number" style=font-size:13px;
+                                name="busnum_var" required>
+
+                        </div>
+                    </div>
+
+
+                    <!-- Input box for "from" with autocomplete RTPI query -->
+                    <div class="form-group">
+                        <div class="ui-widget"> <!-- jQuery autocomplete UI -->
+
+                            <input id="location_from" class="form-control" type="text" placeholder="Start stop" style=font-size:13px;
+                                   name="from_var" required>
+
+                        </div>
+                    </div>
+
+
+                    <!-- Input box for "to" with autocomplete RTPI query -->
+                    <div class="form-group">
+                        <div class="ui-widget"> <!-- jQuery autocomplete UI -->
+
+                            <input id="location_to" class="form-control" type="text" placeholder="End stop" style=font-size:13px;
+                                   name="to_var" required>
+
+                        </div>
+                    </div>
+
+
+                    <!-- Input box for time -->
+                    <div class="form-group">
+
+                        <input id="clockpicker" class="form-control" class="clockpicker" type="time" value="09:00" placeholder="Time"
+                               name="time_var" value="06:00" required>
+
+                    </div>
+
+                    <button class="btn btn-primary" type="submit">Submit</button>
+             <br>
+
+                </form>
+
+                <div id="datepicker"></div>
+
+                <!--Script to render clockpicker and datepicker-->
+                <script>
+                    $(document).ready(function() {
+                        $("input[type=time]").clockInput(false);
+                        $("#datepicker").datepicker({
+                            maxDate: new Date(2018, 11, 31),
+                            minDate: new Date(),
+                            altField: "#selectDate",
+                            showAnim: "fold",
+                            showOptions: {direction: "up"}
+                        })
+                    })
+
+                </script>
+
+            </div>
+        </div>
+
+        <!-- the response rendered by back end Django will be inserted here by jQuery AJAX call -->
+        <div id="response"></div>
+    </div>
+
+</div>
+</div>
+
+{% endblock %}

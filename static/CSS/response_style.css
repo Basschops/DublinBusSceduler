@@ -1,0 +1,15 @@
+#response-row-1 .col-sm-4, #response-row-2 .col-sm-4 {
+    background-color: black;
+    border-radius: 15px;
+    height: 150px;
+    color: white;
+}
+
+#response-row-1 p, #response-row-2 p {
+    color: white;
+}
+
+#response-row-1, #response-row-2 {
+    padding: 20px 0 0 0;
+}
+

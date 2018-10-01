@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="jumbotron text-center">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <h2>Accessibility Mode</h2>
+        <br>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <br>
+        <form action="/planner/formdata" method="get" id="planner_form">
+
+          <!--Input box for route number with autocomplete RTPI query-->
+          <div class="form-group">
+            <span class="sr-only">Bus route number</span>
+            <h1>Bus Number</h1>
+            <input id="bus_number" onkeyup="pred1()" class="form-control" type="text" name="busnum_var" required>
+          </div>
+
+          <!-- Input box for "from" with autocomplete RTPI query -->
+          <div class="form-group">
+            <span class="sr-only">Start Stop</span>
+            <h1>Start Stop</h1>
+            <input id="location_from" onkeyup="pred()" class="form-control" type="text" name="from_var" required>
+          </div>
+
+          <!-- Input box for "to" with autocomplete RTPI query -->
+          <div class="form-group">
+            <span class="sr-only">End Stop</span>
+            <h1>End Stop</h1>
+            <!-- AUTOCOMPLETE USER INPUT -->
+            <input id="location_to" onkeyup="pred()" class="form-control" type="text" name="to_var" required>
+          </div>
+
+          <div class="form-group">
+            <span class="sr-only">Date, for example 23/07/2018</span>
+            <h1>Date</h1>
+            <input id="datepicker" class="form-control" type="text" name="date_var" placeholder="Date, for example 08/24/2018" required>
+          </div>
+
+          <div class="form-group">
+            <span class="sr-only">Time, for example 22:30 </span>
+            <h1>Time</h1>
+            <input id="clockpicker" class="form-control" type="text" name="time_var" placeholder="Time, for example 22:30" required>
+          </div>
+
+          <span class="sr-only">Please click submit</span>
+          <button class="btn btn-primary" type="submit">Submit</button>
+
+        </form>
+      </div>
+    </div>
+    <!-- the response rendered by back end Django will be inserted here by jQuery AJAX call -->
+    <div id="response"></div>
+
+  </div>
+</div>
+
+
+<script src="{% static 'JS/response.js' %}"></script>
+
+{% endblock %}

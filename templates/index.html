@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BUSy</title>
+
+    {% load static %}
+
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'CSS/index_style.css' %}" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'CSS/index_style.css' %}" />
+
+    <link rel="stylesheet" type="text/css" href="{% static 'CSS/response_style.css' %}" />
+
+    <!-- Hotjar Tracking Code for www.dublinbusy.com -->
+    <script>
+       (function(h,o,t,j,a,r){
+           h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+           h._hjSettings={hjid:975562,hjsv:6};
+           a=o.getElementsByTagName('head')[0];
+           r=o.createElement('script');r.async=1;
+           r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+           a.appendChild(r);
+       })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+    </script>
+</head>
+<body>
+
+<!-- main body -->
+
+
+
+<!-- On The Go section to persona page -->
+
+
+
+<div class="container">
+    <div class="row">
+        <br>
+    
+            
+        <form action="/onthego/formdata" method="get" id="onthego_form">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <!-- <input id="route_number" onkeyup="pred1()" class="form-control" type="text" placeholder="e.g. 46A" name="busnum_var" required> -->
+                    <div class="ui-widget"> <!-- jQuery autocomplete UI -->
+                        <input id="bus_number" class="form-control" type="text" placeholder="Bus number" name="busnum_var" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-3">
+
+                <div class="form-group">
+                    <!-- <input id="route_number" onkeyup="pred1()" class="form-control" type="text" placeholder="e.g. 46A" name="busnum_var" required> -->
+                    <div class="ui-widget"> <!-- jQuery autocomplete UI -->
+                        <input id="location_from" class="form-control" type="text" placeholder="Start stop" name="from_var" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <!-- <input id="route_number" onkeyup="pred1()" class="form-control" type="text" placeholder="e.g. 46A" name="busnum_var" required> -->
+                    <div class="ui-widget"> <!-- jQuery autocomplete UI -->
+                        <input id="location_to" class="form-control" type="text" placeholder="End stop" name="to_var" required>
+                    </div>
+                </div>
+            </div>
+        
+
+            <div class="col-sm-1">
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </div>
+
+        </form>
+        
+              <div class="col-sm-1">
+            
+
+            <span class="sr-only">Please select for Screen Reader Compatibility</span>
+
+
+
+            <hover title="Accessibility Page For Visually Impared">
+                <a class="action" href="/accessibility"> 
+                    <i class = "glyphicon glyphicon-search"> <br> 
+                    </i>
+
+                </a>
+            </hover>
+        </div>
+        
+        
+    </div>
+
+    <!-- the response rendered by back end Django will be inserted here by jQuery AJAX call -->
+    <div id="response"></div>
+
+    <div class="jumbotron text-center">
+        <div class="container">
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+        
+                <p> Click to select your mood </p> 
+
+                <!-- <p>Current time: {{ serverTime }}</p> -->
+
+                <hr>
+                <p></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <a type="button" id="cardbutton" class="btn btn-lg btn-primary" href="/onthego">
+                    <img class="erb-image-wrapper" src="{% static 'images/runningman.PNG'%}" alt="Buses Coming Now">
+                    <hr>Go</a>
+                <p>Know which bus and want to leave now? </p>
+
+            </div>
+
+            <div class="col-sm-4">
+                <a type="button" class="btn btn-lg btn-primary" href="/theplanner">
+                    <img class="erb-image-wrapper" src="{% static 'images/planner.PNG'%}" alt="Buses leaving in the future"> <hr>Plan</a>
+                <p>Know which bus and fancy leaving later?</p>
+
+
+            </div>
+
+            <div class="col-sm-4">
+                <a type="button" class="btn btn-lg btn-primary" href="/tourist">
+                    <img class="erb-image-wrapper" src="{% static 'images/tourist.PNG'%}" alt="Points of Interest In Dublin"> <hr>Explore</a>
+                <p>Unsure of which bus or <br>
+                what Dublin has to offer?</p>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'JS/autocomplete.js' %}"></script>
+<script src="{% static 'JS/lodash.js '%}"></script>
+<script src="{% static 'JS/response.js' %}"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+ <div class="jumbotron text-center">
+  <div class="container">
+    
+      <div col="row">
+      <div class="sm-col-12">
+      <h2>About the BUSy Team</h2>
+          <br>
+          
+        <div class="row">
+      <div class="col-sm-6">
+              <img class="erb-image-wrapper img-circle" src="{% static 'images/headshot_ernest.jpg'%}" alt="Ernest">
+       </div>
+    
+            <div class="col-sm-6">
+               <h3>Ernestas.</h3>
+            <h4> Co-ordination Lead</h4>
+            <p> Enjoys the finer things in life, from gourmet cuisine to long walks on the beach </p>
+            <p> Dislikes suffering in the World</p>
+          </div></div>
+    
+        <div class="row">
+            <br><br>
+        <div class="col-sm-6">
+               <h3>Julia.</h3>
+            <h4>Maintenance Lead</h4>
+            <p> Enjoys lifes spontaneity and one's entitlement to Yoyo between Pick'n'mix and clean living </p>  
+            <p> Dislikes injustice</p>
+            
+                         
+          </div>
+          
+
+            <div class="row">
+      <div class="col-sm-6">
+              <img class="erb-image-wrapper img-circle"  src="{% static 'images/headshot_julia.jpg'%}" alt="Julia">
+                </div>
+            </div>
+          <br><br><br>
+          <div class="row">
+      <div class="col-sm-6">
+              <img class="erb-image-wrapper img-circle"  src="{% static 'images/headshot_jonathan.png'%}" alt="Jonathan">
+       </div>
+    
+            <div class="col-sm-6">
+               <h3>Jonathan Leon.</h3>
+            <h4> Customer Lead </h4>
+            <p> Enjoys catering for the needs of different user types in User Interface design</p>
+            <p> Dislikes Thunderstorms</p>
+                
+                         
+          </div></div>
+    
+        <div class="row">
+            <br><br>
+        <div class="col-sm-6">
+               <h3>Daragh.</h3>
+            <h4> Code Lead</h4>
+            <p> Enjoys DIY culture and a night in with the boys</p>
+            <p> Dislikes going about things the right way</p>
+                         
+          </div>
+          
+
+            <div class="row">
+      <div class="col-sm-6">
+              <img class="erb-image-wrapper img-circle"  src="{% static 'images/headshot_daragh.jpg'%}" alt="Daragh">
+                </div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+     </div>
+  </div>
+
+
+{% endblock %}
